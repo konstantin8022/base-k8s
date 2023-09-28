@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: word-my
+ annotations:
+    certmanager.k8s.io/cluster-issuer: monitoring-issuer
+spec:
+  tls:
+    - hosts:
+        - base.local.net
+      secretName: mon-tls       
+  rules:
+  - host: base.local.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wordpress
+            port:
+              number: 80
+  ingressClassName: nginx
+
